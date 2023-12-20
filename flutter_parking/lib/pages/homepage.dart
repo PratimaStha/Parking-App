@@ -1,13 +1,7 @@
-//import 'dart:html';
-
 import 'package:flutter/material.dart';
-//import 'package:flutter_parking/pages/profile.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:flutter_parking/pages/search.dart';
-
 import '../models/location.model.dart';
 import 'booked.dart';
-//import 'location.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,11 +25,8 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             bottomindex = index;
           });
-          //  print(Location());
-          //Console.log('location.dart');
-          //  print(index);
         },
-        tabs: [
+        tabs: const [
           GButton(icon: Icons.location_on, text: 'Near By'),
           GButton(icon: Icons.bookmark_added, text: 'Booked'),
           //  GButton(icon: Icons.search, text: 'Search'),
@@ -44,7 +35,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: IndexedStack(
         index: bottomindex,
-        children: [
+        children: const [
           ModelLocation(),
           selectslot(),
           //    Search(),

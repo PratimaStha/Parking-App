@@ -1,42 +1,37 @@
-//import 'package:flutter/gestures.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_parking/pages/signup.dart';
-//import 'package:flutter_parking/pages/registration.dart';
+
 import './homepage.dart';
 
-class LoginSCreen extends StatefulWidget {
-  const LoginSCreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<LoginSCreen> createState() => _LoginSCreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginSCreenState extends State<LoginSCreen> {
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Login Page"),
+        title: const Text("Login Page"),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 60.0),
               child: Center(
-                child: Container(
+                child: SizedBox(
                   width: 200,
                   height: 150,
-                  /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
-                  // child: Image.asset('asset/images/flutter-logo.png')
                 ),
               ),
             ),
-            Padding(
+            const Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
@@ -46,7 +41,7 @@ class _LoginSCreenState extends State<LoginSCreen> {
                     hintText: 'Enter valid email id as abc@gmail.com'),
               ),
             ),
-            Padding(
+            const Padding(
               padding:
                   EdgeInsets.only(left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
@@ -59,13 +54,11 @@ class _LoginSCreenState extends State<LoginSCreen> {
               ),
             ),
             TextButton(
-              onPressed: () {
-                //TODO FORGOT PASSWORD SCREEN GOES HERE
-              },
-              child: Text(
+              onPressed: () {},
+              child: const Text(
                 'Forgot Password',
                 style: TextStyle(
-                    color: const Color.fromARGB(255, 138, 10, 1), fontSize: 15),
+                    color: Color.fromARGB(255, 138, 10, 1), fontSize: 15),
               ),
             ),
             Container(
@@ -76,23 +69,22 @@ class _LoginSCreenState extends State<LoginSCreen> {
               child: TextButton(
                 //  backgroundColor: Colors.black,
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const HomePage()));
                 },
-                child: Text(
+                child: const Text(
                   'Login',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 130,
             ),
-             RichText(
-             text: 
-            TextSpan(
+            RichText(
+              text: TextSpan(
                 children: [
-                  TextSpan(
+                  const TextSpan(
                     text: 'New User?',
                     style: TextStyle(fontSize: 15, color: Colors.black),
                   ),
@@ -101,18 +93,20 @@ class _LoginSCreenState extends State<LoginSCreen> {
                   //  children: [
                   TextSpan(
                     text: 'Create Account!',
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 138, 10, 1)),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => Registration()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const Registration()));
                       },
                   ),
                 ], //  TextSpan(text: ' world!'),
               ),
-             ),
+            ),
           ],
         ),
       ),
