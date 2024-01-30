@@ -1,15 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_parking/pages/payment.dart';
 
 class selectslot extends StatefulWidget {
-  const selectslot({super.key});
+  final String? parkingName;
+  final String? locationName;
+  const selectslot({
+    Key? key,
+    this.parkingName,
+    this.locationName,
+  }) : super(key: key);
 
   @override
   State<selectslot> createState() => _selectslotState();
 }
 
 class _selectslotState extends State<selectslot> {
+  List<String> selectedSlotIndex = <String>[];
   var countseatleft = 3 * 4;
   //var countSeatCenter = 4 * 10;
   var countseatright = 3 * 4;
@@ -20,11 +27,13 @@ class _selectslotState extends State<selectslot> {
   @override
   void initState() {
     initseatvaluetolist(
-        isListSeatLeft: true,
-        //isListSeatCenter: false,
-        isListSeatRight: false,
-        count: countseatleft,
-        side: "l");
+      isListSeatLeft: true,
+      //isListSeatCenter: false,
+      isListSeatRight: false,
+      count: countseatleft,
+      side: "l",
+      startingIndex: 0,
+    );
     // initseatvaluetolist(
     //     isListSeatLeft: false,
     //     //isListSeatCenter: true,
@@ -32,25 +41,29 @@ class _selectslotState extends State<selectslot> {
     //     //count: countSeatCenter,
     //     side: "c");
     initseatvaluetolist(
-        isListSeatLeft: false,
-        //isListSeatCenter: false,
-        isListSeatRight: true,
-        count: countseatright,
-        side: "r");
+      isListSeatLeft: false,
+      //isListSeatCenter: false,
+      isListSeatRight: true,
+      count: countseatright,
+      side: "r",
+      startingIndex: 12,
+    );
     setVisiblitySeat();
     super.initState();
   }
 
-  initseatvaluetolist(
-      {bool isListSeatLeft = true,
-      bool isListSeatRight = true,
-      //bool isListSeatCenter = true,
-      count,
-      side}) {
-    var objectdata;
-    for (int i = 0; i < count; i++) {
+  initseatvaluetolist({
+    bool isListSeatLeft = true,
+    bool isListSeatRight = true,
+    //bool isListSeatCenter = true,
+    int count = 0,
+    String? side,
+    int startingIndex = 0,
+  }) {
+    Map<String, dynamic> objectdata;
+    for (int i = startingIndex; i < count + startingIndex; i++) {
       objectdata = {
-        "id": side + "${i + 1}",
+        "id": "${i + 1}",
         "isBooked": false,
         "isAvailable": true,
         "isSelected": false,
@@ -89,13 +102,13 @@ class _selectslotState extends State<selectslot> {
   }
 
   setSelectedToBooked() {
-    listSeatLeft.forEach((seat) {
+    for (var seat in listSeatLeft) {
       if (seat["isSelected"]) {
         setState(() {
           seat["isBooked"] = true;
         });
       }
-    });
+    }
     // listSeatCenter.forEach((seat) {
     //   if (seat["isSelected"]) {
     //     setState(() {
@@ -104,13 +117,13 @@ class _selectslotState extends State<selectslot> {
     //   }
     // });
 
-    listSeatRight.forEach((seat) {
+    for (var seat in listSeatRight) {
       if (seat["isSelected"]) {
         setState(() {
           seat["isBooked"] = true;
         });
       }
-    });
+    }
     //this function to loop every side of seat, from selected to booked, u also can this function to send to u'r serves side
   }
 
@@ -120,47 +133,47 @@ class _selectslotState extends State<selectslot> {
       top: true,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          title: Text(
+            widget.parkingName?.toUpperCase() ?? "",
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          elevation: 0.5,
         ),
-        backgroundColor: Colors.black12,
+        // backgroundColor: Colors.black12,
         body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           width: MediaQuery.of(context).size.width,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20),
-              Container(
-                child: Text("view slot"),
-              ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Container(
+              Row(
+                children: [
+                  Expanded(
                       child: Row(children: [
-                        Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.red,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text(
-                            "Booked",
-                          ),
-                        ),
-                      ]),
-                    )),
-                    Expanded(
-                        child: Container(
-                      child: Row(children: [
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.red,
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      child: const Text(
+                        "Booked",
+                      ),
+                    ),
+                  ])),
+                  Expanded(
+                    child: Row(
+                      children: [
                         Container(
                           width: 20,
                           height: 20,
@@ -170,133 +183,158 @@ class _selectslotState extends State<selectslot> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text(
+                          margin: const EdgeInsets.only(left: 10),
+                          child: const Text(
                             "Selected",
                           ),
                         ),
-                      ]),
-                    )),
-                    Expanded(
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10),
-                              child: Text(
-                                "Available",
-                              ),
-                            ),
-                          ],
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 20,
+                          height: 20,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 10),
+                          child: const Text(
+                            "Available",
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
                 // width: 150,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: Container(
-                      child: Row(children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text(
-                            "Slot for Car",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 138, 10, 1),
-                              fontSize: 15,
-                              // fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ]),
-                    )),
-                    Expanded(
-                        child: Container(
-                      child: Row(children: [
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text(
-                            "Slot for bike/Scooter",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 138, 10, 1),
-                              fontSize: 15,
-                              //  fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ]),
-                    )),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    child: const Text(
+                      "Slot for Car",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 138, 10, 1),
+                        fontSize: 15,
+                        // fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(left: 10),
+                    child: const Text(
+                      "Slot for bike/Scooter",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 138, 10, 1),
+                        fontSize: 15,
+                        //  fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
                 // width: 150,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                //height: 100,
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Text('Slot for car'),
-                    SizedBox(
-                      //  height: 100,
-                      width: 20,
-                    ),
-
                     widgetSeat(listSeatLeft, false),
-
-                    // Expanded(
-                    //   child: widgetSeat(listSeatCenter, true),
-                    // ),
-                    SizedBox(
-                      width: 130,
-                    ),
                     widgetSeat(listSeatRight, false),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20,
+              const SizedBox(
+                height: 30,
               ),
-              const TextField(
-                enabled: false,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Number of Slots ',
-                  //  hintText: 'Number of Slots',
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Selected Slots",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Wrap(
+                    direction: Axis.horizontal,
+                    runSpacing: 4,
+                    spacing: 4,
+                    children: List.generate(
+                      selectedSlotIndex.length,
+                      (index) => FittedBox(
+                        child: Text(
+                          "${selectedSlotIndex[index]}, ",
+                        ),
+                      ),
+                    ).toList(),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 20,
+              const SizedBox(
+                height: 30,
               ),
-              const TextField(
-                enabled: false,
-                decoration: InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Total ',
-                  // hintText: 'No of Slots',
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Number of selected slots",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    selectedSlotIndex.length.toString(),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
+              const SizedBox(
+                height: 30,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Total Amount",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    "NPR. ${selectedSlotIndex.length * 10}",
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -308,16 +346,23 @@ class _selectslotState extends State<selectslot> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
-                        return Parking();
+                        return Parking(
+                          parkingName: widget.parkingName,
+                          locationName: widget.locationName,
+                          slot: selectedSlotIndex,
+                          totalAmount: selectedSlotIndex.length * 10,
+                        );
                       },
                     ),
                   );
                   //    setSelectedToBooked();
                   // Parking();
                 },
-                child: Text(
+                child: const Text(
                   "Buy Slots",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
@@ -329,43 +374,47 @@ class _selectslotState extends State<selectslot> {
 
   // int num = 0;
   Widget widgetSeat(List dataSeat, bool isCenter) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width / 3.93,
       child: GridView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: isCenter ? 4 : 3,
+          crossAxisCount: isCenter ? 4 : 2,
           childAspectRatio: isCenter ? 1 : 1,
+          crossAxisSpacing: 35,
         ),
         itemCount: dataSeat.length,
         itemBuilder: (BuildContext context, int index) {
-          return Visibility(
-            visible: dataSeat[index]["isVisible"],
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  dataSeat[index]["isSelected"] =
-                      !dataSeat[index]["isSelected"];
-
-                  //num++;
-                });
-              },
-              child: Container(
-                child: Text("${index + 1}"),
-                margin: EdgeInsets.all(5),
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: dataSeat[index]["isBooked"]
-                      ? Colors.red
-                      : dataSeat[index]["isSelected"]
-                          ? Colors.green
-                          : Colors.white,
-                  border: Border.all(
-                    color: Colors.black,
-                  ),
-                  borderRadius: BorderRadius.circular(5),
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                dataSeat[index]["isSelected"] = !dataSeat[index]["isSelected"];
+                if (selectedSlotIndex.contains(dataSeat[index]["id"])) {
+                  selectedSlotIndex.remove(dataSeat[index]["id"]);
+                } else {
+                  selectedSlotIndex.add(dataSeat[index]["id"]);
+                }
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.all(5),
+              height: 20,
+              decoration: BoxDecoration(
+                color: dataSeat[index]["isBooked"]
+                    ? Colors.red
+                    : dataSeat[index]["isSelected"]
+                        ? Colors.green
+                        : Colors.white,
+                border: Border.all(
+                  color: Colors.black,
+                ),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Center(
+                child: Text(
+                  dataSeat[index]["id"],
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),

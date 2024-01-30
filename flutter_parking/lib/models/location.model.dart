@@ -51,7 +51,7 @@ class _ModelLocationState extends State<ModelLocation> {
                         borderRadius: BorderRadius.circular(8.0),
                         borderSide: BorderSide.none),
                     labelText: 'Search',
-                    suffixIcon: Icon(Icons.search)),
+                    suffixIcon: const Icon(Icons.search)),
               ),
               const SizedBox(
                 height: 20,
@@ -75,7 +75,10 @@ class _ModelLocationState extends State<ModelLocation> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) {
-                              return selectslot();
+                              return selectslot(
+                                locationName: addresslist[index].address,
+                                parkingName: addresslist[index].name,
+                              );
                             },
                           ),
                         );

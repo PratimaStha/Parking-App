@@ -1,18 +1,24 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
-class Parking extends StatefulWidget {
-  const Parking({super.key});
+class Parking extends StatelessWidget {
+  final int? totalAmount;
+  final List<String>? slot;
+  final String? parkingName;
+  final String? locationName;
+  const Parking({
+    Key? key,
+    this.totalAmount = 0,
+    this.parkingName,
+    this.locationName,
+    this.slot,
+  }) : super(key: key);
 
-  @override
-  State<Parking> createState() => _ParkingState();
-}
-
-class _ParkingState extends State<Parking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Payment",
           style: TextStyle(color: Colors.black),
         ),
@@ -25,27 +31,39 @@ class _ParkingState extends State<Parking> {
               children: [
                 ListTile(
                   // leading: CircleAvatar(child: Text('A')),
-                  title: Text('Parking Name'),
-                  subtitle: Text('ftfj'),
+                  title: const Text('Parking Name'),
+                  subtitle: Text(parkingName ?? ""),
                   // trailing: Icon(Icons.favorite_rounded),
                 ),
                 // Divider(height: 0),
                 ListTile(
                   // leading: CircleAvatar(child: Text('B')),
-                  title: Text('Location'),
-                  subtitle: Text("yuftufjg"),
+                  title: const Text('Location'),
+                  subtitle: Text(locationName ?? ""),
                   // //    'Longer supporting text to demonstrate how the text wraps and how the leading and trailing widgets are centered vertically with the text.'),
                   // trailing: Icon(Icons.favorite_rounded),
                 ),
                 ListTile(
                   // leading: CircleAvatar(child: Text('B')),
-                  title: Text('Slots'),
-                  subtitle: Text("1 3 4"),
+                  title: const Text('Slots'),
+                  subtitle: Wrap(
+                    direction: Axis.horizontal,
+                    runSpacing: 4,
+                    spacing: 4,
+                    children: List.generate(
+                      slot?.length ?? 0,
+                      (index) => FittedBox(
+                        child: Text(
+                          "${slot?[index]}, ",
+                        ),
+                      ),
+                    ).toList(),
+                  ),
                 ),
                 ListTile(
                   // leading: CircleAvatar(child: Text('B')),
-                  title: Text('Total Price'),
-                  subtitle: Text("500"),
+                  title: const Text('Total Price'),
+                  subtitle: Text(totalAmount.toString()),
                 ),
               ],
             ),
@@ -58,7 +76,7 @@ class _ParkingState extends State<Parking> {
               ), // background
 
               onPressed: () {},
-              child: Text(
+              child: const Text(
                 "Payment through khalti",
                 style: TextStyle(color: Colors.white),
               ),
